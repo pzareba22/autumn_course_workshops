@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>BEST Course Workshop</title>
+    <!--
+        source for colors: https://colorhunt.co/palette/ebe4d1b4b4b326577ce55604
+    -->
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            box-sizing: border-box;
+            background-color: whitesmoke;
+        }
+
+        .cardHolder {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 2em;
+            padding: 10em;
+        }
+
+        .card {
+            background-color: white;
+            display: flex;
+            width: 40%;
+            padding: 5em;
+            border-radius: 4px;
+            box-shadow: rgba(100, 100, 111, 0.2) 0 7px 29px 0;
+            position: relative;
+        }
+
+        .card > form {
+            display: flex;
+            gap: 2em;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: space-evenly;
+        }
+
+        .btn1 {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 6px 14px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Roboto', sans-serif;
+            border-radius: 6px;
+            color: #3D3D3D;
+            background: #fff;
+            border: none;
+            box-shadow: 0 0.5px 1px rgba(0, 0, 0, 0.1);
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: manipulation;
+        }
+
+        .btn1:focus {
+            box-shadow: 0 0.5px 1px rgba(0, 0, 0, 0.1), 0 0 0 3.5px rgba(58, 108, 217, 0.5);
+            outline: 0;
+        }
+
+        .card > .label {
+            position: absolute;
+            top: 0;
+            left: .5em;
+            font-size: medium;
+        }
+
+    </style>
+</head>
+<body>
+<form>
+</form>
+<div class="cardHolder">
+    <div class="card">
+        <h3 class="label">Address</h3>
+        <input type="text" value="http://localhost:3000" id="urlInput">
+    </div>
+    <div class="card noCreds">
+        <h3 class="label">No authorization</h3>
+        <form onsubmit="mkRequest(); return false">
+            <input class="btn1" type="submit" value="Send request">
+        </form>
+    </div>
+    <div class="card creds">
+        <h3 class="label">Authorization</h3>
+        <form onsubmit="mkAuthRequest(); return false">
+            <input type="text" id="authUrl" placeholder="authorization url" value="http://localhost:3000/auth">
+            <input type="text" id="login" placeholder="login">
+            <input type="password" id="password" placeholder="password">
+            <input class="btn1" type="submit" value="Send request">
+        </form>
+    </div>
+    <div class="card">
+        <h3 class="label">token</h3>
+        <form onsubmit="mkTokenRequest(); return false">
+            <input id="token" placeholder="token">
+            <input class="btn1" type="submit" value="Send request">
+        </form>
+    </div>
+    <script>
+      function mkRequest() {
+        const url = document.getElementById('urlInput').value;
+        fetch(url)
+          .then(res => res.text())
+          .then(resText => window.alert(resText))
+          .catch(err => window.alert(`ERROR: ${err}`));
+      }
+
+      function mkAuthRequest() {
+        const url = document.getElementById('authUrl').value;
+        const login = document.getElementById('login').value;
+        const password = document.getElementById('password').value;
+        const tokenInput = document.getElementById('token');
+
+        fetch(url, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Basic ${login}:${password}`,
+          },
+        })
+          .then(res => res.text())
+          .then(resText => {
+            window.alert(resText);
+            tokenInput.value = resText;
+          })
+          .catch(err => window.alert(`ERROR: ${err}`));
+      }
+
+      function mkTokenRequest() {
+        const url = document.getElementById('urlInput').value;
+        const token = document.getElementById('token').value;
+        fetch(url, {
+          headers: {
+            'Authentication': `Bearer ${token}`
+          }
+        })
+          .then(res => res.text())
+          .then(resText => {
+            window.alert(resText);
+          })
+          .catch(err => window.alert(`ERROR: ${err}`));
+      }
+    </script>
+</div>
+</body>
+</html>
