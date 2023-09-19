@@ -17,5 +17,3 @@ This repository contains materials necessary for workshops performed during a 20
 ### JWT
 1. [JWT Reference](https://github.com/auth0/node-jsonwebtoken#jwtsignpayload-secretorprivatekey-options-callback)
 
-### SQL Injection
-`http://localhost:3000/Users;%20SELECT%20*%20from%20passwords%20--`
