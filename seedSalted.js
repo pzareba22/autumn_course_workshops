@@ -10,7 +10,7 @@ const hashedAdminPassword =
     .toString('base64');
 
 db.serialize(() => {
-  db.run("CREATE TABLE IF NOT EXISTS Users(id INTEGER PRIMARY KEY, username TEXT, password TEXT)");
+  db.run("CREATE TABLE IF NOT EXISTS Users(id INTEGER PRIMARY KEY, username TEXT, password TEXT, salt TEXT)");
   db.run("CREATE TABLE IF NOT EXISTS Messages(id INTEGER PRIMARY KEY, data TEXT)");
   db.run("CREATE TABLE IF NOT EXISTS Messages2(id INTEGER PRIMARY KEY, data TEXT)");
   db.run("CREATE TABLE IF NOT EXISTS Secret(id INTEGER PRIMARY KEY, data TEXT)");
