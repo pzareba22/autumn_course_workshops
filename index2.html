@@ -82,13 +82,63 @@
             <input class="btn1" type="submit" value="Send request">
         </form>
     </div>
-
+    <div class="card creds">
+        <h3 class="label">Authorization</h3>
+        <form onsubmit="mkAuthRequest(); return false">
+            <input type="text" id="authUrl" placeholder="authorization url" value="http://localhost:3000/auth">
+            <input type="text" id="login" placeholder="login">
+            <input type="password" id="password" placeholder="password">
+            <input class="btn1" type="submit" value="Send request">
+        </form>
+    </div>
+    <div class="card">
+        <h3 class="label">Authorized with token</h3>
+        <form onsubmit="mkTokenRequest(); return false">
+            <input id="token" placeholder="token">
+            <input class="btn1" type="submit" value="Send request">
+        </form>
+    </div>
     <script>
       function mkRequest() {
         const url = document.getElementById('urlInput').value;
         fetch(url)
           .then(res => res.text())
           .then(resText => window.alert(resText))
+          .catch(err => window.alert(`ERROR: ${err}`));
+      }
+
+      function mkAuthRequest() {
+        const url = document.getElementById('authUrl').value;
+        const login = document.getElementById('login').value;
+        const password = document.getElementById('password').value;
+        const tokenInput = document.getElementById('token');
+
+        fetch(url, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Basic ${login}:${password}`,
+          },
+        })
+          .then(res => res.text())
+          .then(resText => {
+            window.alert(resText);
+            tokenInput.value = resText;
+          })
+          .catch(err => window.alert(`ERROR: ${err}`));
+      }
+
+      function mkTokenRequest() {
+        const url = document.getElementById('urlInput').value;
+        const token = document.getElementById('token').value;
+        fetch(url, {
+          headers: {
+            'Authentication': `Bearer ${token}`
+          }
+        })
+          .then(res => res.text())
+          .then(resText => {
+            window.alert(resText);
+          })
           .catch(err => window.alert(`ERROR: ${err}`));
       }
     </script>
